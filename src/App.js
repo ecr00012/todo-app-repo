@@ -6,7 +6,7 @@ function App() {
   return (
     <div className="App">
     
-     <h1 class = 'title'> Your Future Awaits</h1>
+     <h1 className = 'title'> Your Future Awaits</h1>
       <TodoWrapper />
     </div>
   );

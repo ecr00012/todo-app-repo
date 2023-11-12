@@ -14,11 +14,14 @@ export const TodoForm= ({addTodo}) => {
            document.getElementById('todo-input').value = ""
     }
     }
+    
+    
     return (
         <form className = 'TodoForm' onSubmit = {handleSubmit}> 
             <input type = "text" id = 'todo-input' className = 'todo-input'  placeholder = 'What will you do today?' onChange =
             {(e) => { !profanity.exists(e.target.value) ? setValue(e.target.value) : setValue("Be Better.")}}></input>
             <button type = 'submit' className = 'todo-btn'>Commit</button>
+            
         </form>
     )
 }
