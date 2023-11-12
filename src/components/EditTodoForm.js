@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { profanity } from "https://cdn.skypack.dev/@2toad/profanity";
+import { profanity } from '@2toad/profanity'
 
 export const EditTodoForm= ({editTodo, task}) => {
     const [value, setValue] = useState(task.task)

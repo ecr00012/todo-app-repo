@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { profanity } from "https://cdn.skypack.dev/@2toad/profanity";
+import { profanity } from '@2toad/profanity'
 
 export const TodoForm= ({addTodo}) => {
     const [value, setValue] = useState("")
@@ -11,7 +11,7 @@ export const TodoForm= ({addTodo}) => {
             addTodo(value)
             
             setValue("")
-            document.getElementById('todo-input').value = ""
+           document.getElementById('todo-input').value = ""
     }
     }
     return (
