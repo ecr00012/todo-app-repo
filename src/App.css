@@ -84,6 +84,19 @@ h1 {
   cursor: pointer;
 }
 
+
+.todo-btn:hover{
+  transform:scale(1.02);
+  box-shadow: 0  0 10px white;
+}
+
+.Todo:hover{
+ 
+  transform: scale(1.03);
+  box-shadow: 0 0 20px white;
+}
+
+
 .Todo {
   display: flex;
   justify-content: space-between;
@@ -92,7 +105,11 @@ h1 {
   padding: 0.75rem 1rem;
   border-radius: 5px;
   margin-bottom: 1rem;
+  transition: 0.2s;
+  
 }
+
+
 
 .Todo:nth-child(n+1){
   background: linear-gradient(
@@ -100,7 +117,10 @@ h1 {
   rgb(42, 2, 121) 0%,
   rgb(143, 124, 195) 100%
   )
+
+  
 }
+
 
 
 
@@ -111,6 +131,7 @@ h1 {
   rgb(94, 52, 234) 100%
   )
 }
+
 
 .fa-trash {
   margin-left: 0.75rem;
