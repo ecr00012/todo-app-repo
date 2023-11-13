@@ -1,6 +1,5 @@
 
 import {TodoWrapper} from './components/TodoWrapper'
-import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import './App.css';
 
 

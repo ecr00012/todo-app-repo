@@ -48,6 +48,13 @@ h1 {
   margin-bottom: 1rem;
 }
 
+.dragActive {
+  box-shadow: 0 0 50px white;
+  border-radius:  20px;
+  padding: 20px;
+  transition: 1s
+}
+
 .todo-input {
   outline: none;
   background-image: linear-gradient(90deg, rgba(93,12,255,1) 30%,
@@ -62,6 +69,11 @@ h1 {
   margin-bottom: 2rem;
   width: 300px;
   color: #fffbfb;
+  transition:2s
+}
+
+.todo-input:hover{
+  box-shadow: 0 0 40px white
 }
 
 .todo-input::placeholder {
@@ -82,6 +94,7 @@ h1 {
   padding-left: 0.55rem;
   padding-right: 0.55rem;
   cursor: pointer;
+  transition: 0.5s
 }
 
 

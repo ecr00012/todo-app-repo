@@ -95,12 +95,14 @@ console.log(JSON.stringify(todoList))
         <DragDropContext onDragEnd = {onDragEnd}>
         <div className = "TodoWrapper">
             <Droppable droppableId='TodoDrops'>
-                {(provided) => (
-             <div ref = {provided.innerRef}
+                {(provided, snapshot) => (
+             <div 
+
+             ref = {provided.innerRef}
              {...provided.droppableProps}>
                 <TodoForm addTodo = {addTodo} />
             
-
+                    <div className = { `${snapshot.isDraggingOver ? "dragActive" : "" }`}>
                 
              {todos.map((todo, index) => (
                 todo.isEditing ? (
@@ -117,7 +119,7 @@ console.log(JSON.stringify(todoList))
                     
             
                     {provided.placeholder}
-              
+                    </div>
               </div>
                )}
               </Droppable>
