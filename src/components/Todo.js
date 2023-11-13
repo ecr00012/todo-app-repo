@@ -2,10 +2,17 @@ import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPenToSquare } from '@fortawesome/free-regular-svg-icons'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
-export const Todo = ({task, toggleComplete, deleteTodo, editTodo}) =>{
+import { Draggable } from 'react-beautiful-dnd'
+export const Todo = ({task, toggleComplete, deleteTodo, editTodo, index}) =>{
 
     return (
-        <div className = 'Todo'>
+        <Draggable draggableId = {task.id.toString()} index = {index}>
+            {(provided) => ( 
+        <div className = 'Todo'
+        {...provided.draggableProps}
+        {...provided.dragHandleProps}
+        ref = {provided.innerRef}
+        >
             <p onClick = {() => toggleComplete(task.id)} className = {`${task.completed ? 'completed' : ""}`}>{task.task}</p>
             <div>
                 <FontAwesomeIcon icon = {faPenToSquare} 
@@ -14,6 +21,9 @@ export const Todo = ({task, toggleComplete, deleteTodo, editTodo}) =>{
                     () => deleteTodo(task.id)} />
             </div>
         </div>
+
+            )}
+        </Draggable>
     )
 }
 

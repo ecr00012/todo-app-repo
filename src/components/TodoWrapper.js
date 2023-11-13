@@ -3,6 +3,7 @@ import TodoForm from './TodoForm'
 import Todo from './Todo'
 import EditTodoForm from './EditTodoForm'
 import {v4 as uuidv4} from 'uuid'
+import { Droppable, DragDropContext} from 'react-beautiful-dnd'
 uuidv4()
 
 
@@ -11,9 +12,9 @@ export const TodoWrapper = () =>
 {
     const [todos, setTodos] = useState([])
    
-     useEffect(() =>{
+    useEffect(() =>{
         if (localStorage.getItem("todos")){
-         setTodos(JSON.parse(localStorage.getItem("todos")))
+            setTodos((JSON.parse(localStorage.getItem("todos"))))
             
 
  }
@@ -59,24 +60,70 @@ export const TodoWrapper = () =>
         localStorage.setItem("todos","")
     }
 
+    const onDragEnd = (result) => {
+
+        const {source, destination} = result;
     
-    return (
-        
-        <div className = "TodoWrapper">
-            <TodoForm addTodo = {addTodo} />
+        if (!destination)
+        return
+    
+        if (
+          destination.droppableId === source.droppableId &&
+          destination.index === source.index
+        )
+        return
             
-            {todos.map((todo, index) => (
+        let add, todoList = todos
+    
+        if (source.droppableId === "TodoDrops"){
+            add = todoList[source.index]
+            todoList.splice(source.index, 1)
+        }
+
+        if (destination.droppableId === "TodoDrops"){
+           todoList.splice(destination.index,0,add)
+        }
+
+console.log(JSON.stringify(todos))
+console.log(JSON.stringify(todoList))
+       setTodos(todoList)
+       localStorage.setItem("todos", JSON.stringify(todoList))
+
+      }
+
+    return (
+        <DragDropContext onDragEnd = {onDragEnd}>
+        <div className = "TodoWrapper">
+            <Droppable droppableId='TodoDrops'>
+                {(provided) => (
+             <div ref = {provided.innerRef}
+             {...provided.droppableProps}>
+                <TodoForm addTodo = {addTodo} />
+            
+
+                
+             {todos.map((todo, index) => (
                 todo.isEditing ? (
                     <EditTodoForm editTodo = {editTask} task = {todo}/>
                 ) : (
-                <Todo task = {todo} key = {index} 
+                <Todo task = {todo} key = {todo.id.toString()} index = {index}
                 toggleComplete = {toggleComplete} deleteTodo = {deleteTodo}
                 editTodo = {editTodo} />
               
 
-            )
-        ))}
-           { todos.length > 0 && <button className = 'todo-btn' onClick = {handleClick}>Clear</ button> }
+                )
+                 ))}
+             
+                    
+            
+                    {provided.placeholder}
+              
+              </div>
+               )}
+              </Droppable>
+             
+              { todos.length > 0 && <button className = 'todo-btn' onClick = {handleClick}>Clear</ button> }
         </div>
+        </DragDropContext>
     )
 }
