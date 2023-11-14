@@ -11,6 +11,8 @@ export const EditTodoForm= ({editTodo, task}) => {
         editTodo(value, task.id)
         
         setValue("")
+        
+        
     }
     return (
         <form className = 'TodoForm' onSubmit = {handleSubmit}> 

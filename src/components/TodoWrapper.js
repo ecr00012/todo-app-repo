@@ -127,14 +127,13 @@ console.log(JSON.stringify(todoList))
             
                     <div className = { `${snapshot.isDraggingOver ? "dragActive" : "" }`}>
             
-                        <TransitionGroup>
+                        <TransitionGroup className= "todosList">
                         {todos.map((todo, index) => (
                         
                                     
                             
-                                 todo.isEditing ? (
-                                <EditTodoForm editTodo = {editTask} task = {todo}/>
-                                 ) : (
+                                 
+                               //
                                     
                                     <CSSTransition  in= {true} appear = {true} key={todo.id.toString()} timeout={200} classNames={"todoTransition"}>
                                        
@@ -145,7 +144,7 @@ console.log(JSON.stringify(todoList))
                                    </CSSTransition>
                                   
                                     
-                                     )    
+                                     
 
                            
                                    

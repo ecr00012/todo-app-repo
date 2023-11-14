@@ -26,7 +26,7 @@ function App() {
   }, []);
   if (session) {
     
-
+    
   return (
    
      <div className="App">
@@ -37,7 +37,12 @@ function App() {
 }
 else return (
 <div className = "App">
-<TodoWrapper />
+  <BrowserRouter>
+  <Routes>
+<Route path = "/"  element = {<TodoWrapper/>}/>
+<Route path = "/setUsername" element = {<usernameForm/>}/>
+  </Routes>
+  </BrowserRouter>
 </div>)
 }
 
