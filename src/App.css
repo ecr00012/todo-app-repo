@@ -135,9 +135,7 @@ transition: opacity 200 ms ease-in;
   box-shadow: 0 0 40px white
 }
 
-.todo-input::placeholder {
-  color: #fbfbfb;
-}
+
 
 .fadeUp{
   opacity: 0;
