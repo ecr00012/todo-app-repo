@@ -3,11 +3,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPenToSquare } from '@fortawesome/free-regular-svg-icons'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { Draggable } from 'react-beautiful-dnd'
+import { CSSTransition } from 'react-transition-group'
 export const Todo = ({task, toggleComplete, deleteTodo, editTodo, index}) =>{
 
     return (
         <Draggable draggableId = {task.id.toString()} index = {index}>
             {(provided) => ( 
+                
         <div className = 'Todo'
         {...provided.draggableProps}
         {...provided.dragHandleProps}
@@ -21,7 +23,7 @@ export const Todo = ({task, toggleComplete, deleteTodo, editTodo, index}) =>{
                     () => deleteTodo(task.id)} />
             </div>
         </div>
-
+        
             )}
         </Draggable>
     )

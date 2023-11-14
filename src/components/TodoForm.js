@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import { profanity } from '@2toad/profanity'
 
+
 export const TodoForm= ({addTodo}) => {
     const [value, setValue] = useState("")
 
@@ -10,9 +11,11 @@ export const TodoForm= ({addTodo}) => {
         if (value){
             addTodo(value)
             
-            setValue("")
-           document.getElementById('todo-input').value = ""
-    }
+            setValue(""); 
+            document.getElementById('todo-input').value = ""
+           
+            }
+    
     }
     
     

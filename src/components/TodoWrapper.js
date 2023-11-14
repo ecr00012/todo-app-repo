@@ -1,24 +1,36 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useRef} from 'react'
 import TodoForm from './TodoForm'
 import Todo from './Todo'
 import EditTodoForm from './EditTodoForm'
 import {v4 as uuidv4} from 'uuid'
 import { Droppable, DragDropContext} from 'react-beautiful-dnd'
+import { supabase } from '../App'
+import { CSSTransition, TransitionGroup,  } from 'react-transition-group'
+import '../App.css' 
+
 uuidv4()
 
 
 
 export const TodoWrapper = () =>
 {
+
+    
     const [todos, setTodos] = useState([])
-   
+    const [username, setUsername] = useState("")
+    
+    
+    let nameHeader = ""
     useEffect(() =>{
+
+       
         if (localStorage.getItem("todos")){
             setTodos((JSON.parse(localStorage.getItem("todos"))))
             
-
+           
  }
  }, [])
+
 
     
 
@@ -28,12 +40,17 @@ export const TodoWrapper = () =>
         const newTodos = [...todos, {id: uuidv4(), task: todo, completed:false, isEditing: false}]
         setTodos(newTodos)
         localStorage.setItem("todos", JSON.stringify(newTodos))
+
+
     }
 
     const deleteTodo = id =>{
-        const newTodos = todos.filter(todo=>todo.id !== id)
+        
+            const newTodos = todos.filter(todo=>todo.id !== id)
         setTodos(newTodos)
         localStorage.setItem("todos", JSON.stringify(newTodos))
+        
+        
 
     }
 
@@ -91,40 +108,65 @@ console.log(JSON.stringify(todoList))
 
       }
 
-    return (
-        <DragDropContext onDragEnd = {onDragEnd}>
-        <div className = "TodoWrapper">
-            <Droppable droppableId='TodoDrops'>
-                {(provided, snapshot) => (
-             <div 
+      
 
-             ref = {provided.innerRef}
-             {...provided.droppableProps}>
-                <TodoForm addTodo = {addTodo} />
+    return (
+        
+        <DragDropContext onDragEnd = {onDragEnd}>
+           
+            <button style = {{"top": "10px", "right": "10px", "position" : "absolute"}} className = 'todo-btn' onCLick ={supabase.auth.signOut()}>logout</button>
+            <h1 className = 'title'> {nameHeader} Your Future Awaits</h1>  
+            <div className = "TodoWrapper">
+                    <Droppable droppableId='TodoDrops'>
+                    {(provided, snapshot) => (
+                    <div 
+
+                    ref = {provided.innerRef}
+                    {...provided.droppableProps}>
+                     <TodoForm addTodo = {addTodo} />
             
                     <div className = { `${snapshot.isDraggingOver ? "dragActive" : "" }`}>
-                
-             {todos.map((todo, index) => (
-                todo.isEditing ? (
-                    <EditTodoForm editTodo = {editTask} task = {todo}/>
-                ) : (
-                <Todo task = {todo} key = {todo.id.toString()} index = {index}
-                toggleComplete = {toggleComplete} deleteTodo = {deleteTodo}
-                editTodo = {editTodo} />
-              
+            
+                        <TransitionGroup>
+                        {todos.map((todo, index) => (
+                        
+                                    
+                            
+                                 todo.isEditing ? (
+                                <EditTodoForm editTodo = {editTask} task = {todo}/>
+                                 ) : (
+                                    
+                                    <CSSTransition  in= {true} appear = {true} key={todo.id.toString()} timeout={200} classNames={"todoTransition"}>
+                                       
+                                        <Todo  task = {todo} key = {todo.id.toString()} index = {index}
+                                        toggleComplete = {toggleComplete} deleteTodo = {deleteTodo}
+                                        editTodo = {editTodo} classNames = "Todo"></Todo>
+                                       
+                                   </CSSTransition>
+                                  
+                                    
+                                     )    
 
-                )
-                 ))}
+                           
+                                   
+                                         
+                           ))}
+                           </TransitionGroup>
+
              
                     
-            
+                    
                     {provided.placeholder}
+                
+                    
+                
                     </div>
               </div>
                )}
               </Droppable>
+              
+              { todos.length > 0 && <button className = "todo-btn fadeUp"  onClick = {handleClick}>Clear</ button> }
              
-              { todos.length > 0 && <button className = 'todo-btn' onClick = {handleClick}>Clear</ button> }
         </div>
         </DragDropContext>
     )
