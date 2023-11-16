@@ -51,7 +51,7 @@ const [user, setUser] = useState()
 
 
     return (
-    <div className = "loginForm">
+    <div className = "loginForm titleFadeUp">
         <h1  id = "loginTitle" className = "title">What Will You Do? </h1>
             <div className = "Auth">
                     <Auth 
