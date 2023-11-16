@@ -219,7 +219,7 @@ export const TodoWrapper = ({listId}) =>
         
         <DragDropContext onDragEnd = {onDragEnd}>
            
-            <button style = {{"top": "10px", "right": "10px", "position" : "absolute"}} className = 'todo-btn' onClick = {logout}>logout</button>
+            <button style = {{"top": "10px", "right": "10px", "position" : "absolute"}} className = 'todo-btn logoutButton' onClick = {logout}>logout</button>
            
             <h1 className = "title titleFadeUp"> {username + ",  your future awaits"}</h1>  
             <div className = "TodoWrapper">

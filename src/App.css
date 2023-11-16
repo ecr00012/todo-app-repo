@@ -109,11 +109,30 @@ transition: opacity 200 ms ease-in;
   
 }
 
+.loginForm{
+  transform:scale(0);
+  animation: loginForm 2s ease forwards;
+}
 
+@keyframes loginForm{
+  to {
+    transform:scale(1)
+  }
+}
 .TodoForm {
   width: 100%;
   margin-bottom: 1rem;
+  opacity: 0;
+  animation:TodoForm  5s ease forwards
 }
+
+@keyframes TodoForm{
+
+  to{
+    opacity:1;
+  }
+}
+
 
 .dragActive {
   box-shadow: 0 0 50px white;
@@ -208,6 +227,20 @@ transition: opacity 200 ms ease-in;
   cursor: pointer;
   
 
+}
+
+.logoutButton{
+  opacity:0;
+  animation: logoutButton 3s ease forwards ;
+  transform:translateX(100px);
+  
+}
+
+@keyframes logoutButton{
+  to {
+  opacity:1;
+  transform: translateX(0px)
+  }
 }
 
 

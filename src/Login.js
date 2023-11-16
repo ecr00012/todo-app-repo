@@ -51,13 +51,13 @@ const [user, setUser] = useState()
 
 
     return (
-    <div className = "loginForm titleFadeUp">
+    <div className = "loginForm ">
         <h1  id = "loginTitle" className = "title">What Will You Do? </h1>
             <div className = "Auth">
                     <Auth 
                     supabaseClient={supabase}
                     appearance={{ theme: ThemeSupa }}
-                    providers={['google', 'facebook', 'twitter']}
+                    providers={null}
                     theme="dark"
                     redirectTo='localhost:3000/'
                     />
