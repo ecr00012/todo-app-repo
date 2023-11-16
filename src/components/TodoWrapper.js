@@ -52,34 +52,63 @@ export const TodoWrapper = ({listId}) =>
             
         
        
-       if (localStorage.getItem("todos")){
-           setTodos((JSON.parse(localStorage.getItem("todos"))))
-        }
+       //if (localStorage.getItem("todos")){
+        //   setTodos((JSON.parse(localStorage.getItem("todos"))))
+       // }
+       updateTodos()
         
            
         
  }, [])
 
 
-    
+    const  updateTodos = async (user) => {
+
+        const todos = await supabase
+        .from("todos")
+        .select()
+        .then(({data}) =>{
+            
+            if (data)
+            {
+                setTodos(data)
+            }
+            
+        })
+
+      
+    }
 
 
 
-    const addTodo = todo => {
-        const newTodos = [...todos, {id: uuidv4(), task: todo, completed:false, isEditing: false}]
-        setTodos(newTodos)
-        localStorage.setItem("todos", JSON.stringify(newTodos))
+    const addTodo = async todo => {
+        const id = uuidv4()
+       // const newTodos = [...todos, {id: id, task: todo, completed:false, isEditing: false}]
+       // setTodos(newTodos)
+       // localStorage.setItem("todos", JSON.stringify(newTodos))
 
+        const tod = await supabase
+        .from('todos')
+        .insert({  "id": id, "task" : todo, "isEditing": false, "completed":false, "userid": user.id})
+
+        updateTodos()
+        
+        
 
     }
 
-    const deleteTodo = id =>{
+    const deleteTodo = async id =>{
         
-            const newTodos = todos.filter(todo=>todo.id !== id)
-        setTodos(newTodos)
-        localStorage.setItem("todos", JSON.stringify(newTodos))
+        //const newTodos = todos.filter(todo=>todo.id !== id)
+       // setTodos(newTodos)
+        //localStorage.setItem("todos", JSON.stringify(newTodos))
         
-        
+        await supabase
+        .from('todos')
+        .delete()
+        .eq("id", id)
+
+        updateTodos()
 
     }
 
@@ -88,10 +117,27 @@ export const TodoWrapper = ({listId}) =>
             {...todo, isEditing: !todo.isEditing} : todo))
     }
 
-    const toggleComplete = id => {
-        const newTodos = todos.map(todo => todo.id === id ? {...todo, completed : !todo.completed} : todo)
-        setTodos(newTodos)
-        localStorage.setItem("todos", JSON.stringify(newTodos))
+    const toggleComplete = async id => {
+       // const newTodos = todos.map(todo => todo.id === id ? {...todo, completed : !todo.completed} : todo)
+        //setTodos(newTodos)
+       // localStorage.setItem("todos", JSON.stringify(newTodos))
+
+       
+       const todo = await supabase 
+        .from('todos')
+        .select()
+        .eq("id",id).then(  async (todo) =>{
+
+        const completed = todo.data[0].completed
+
+        await supabase
+        .from('todos')
+        .update({completed: !completed})
+        .eq("id", id)
+    })
+
+    updateTodos()
+
     }
 
     const editTask = (task,id) => {
@@ -101,9 +147,17 @@ export const TodoWrapper = ({listId}) =>
             localStorage.setItem("todos", JSON.stringify(newTodos))
     }
 
-    const handleClick = () => {
-        setTodos([])
-        localStorage.setItem("todos","")
+    const handleClick =async () => {
+        
+
+        await supabase
+        .from('todos')
+        .delete()
+        .eq("userid", user.id)
+        
+
+        updateTodos()
+
     }
 
     const logout = () => {
@@ -111,10 +165,10 @@ export const TodoWrapper = ({listId}) =>
         navigate("/login")
     }
 
-    const onDragEnd = (result) => {
+    const onDragEnd = async (result) => {
 
         const {source, destination} = result;
-    
+
         if (!destination)
         return
     
@@ -129,16 +183,33 @@ export const TodoWrapper = ({listId}) =>
         if (source.droppableId === "TodoDrops"){
             add = todoList[source.index]
             todoList.splice(source.index, 1)
+
+           
+            
         }
 
         if (destination.droppableId === "TodoDrops"){
            todoList.splice(destination.index,0,add)
+
         }
 
-console.log(JSON.stringify(todos))
-console.log(JSON.stringify(todoList))
-       setTodos(todoList)
-       localStorage.setItem("todos", JSON.stringify(todoList))
+
+
+       
+       await supabase
+       .from('todos')
+       .delete()
+       .eq("userid", user.id)
+
+        {todoList.map( async (todo)=>{
+            console.log(todo)
+            await supabase
+            .from('todos')
+            .insert({"id": todo.id, "task" :todo.task, "completed" : todo.completed, "isEditing" : todo.isEditing, "userid" : user.id})
+            
+        })} 
+     // setTodos(todoList)
+    //  localStorage.setItem("todos", JSON.stringify(todoList))
 
       }
 
@@ -150,7 +221,7 @@ console.log(JSON.stringify(todoList))
            
             <button style = {{"top": "10px", "right": "10px", "position" : "absolute"}} className = 'todo-btn' onClick = {logout}>logout</button>
            
-            <h1 className = 'title'> {username + ",  your future awaits"}</h1>  
+            <h1 className = "title titleFadeUp"> {username + ",  your future awaits"}</h1>  
             <div className = "TodoWrapper">
                     <Droppable droppableId='TodoDrops'>
                     {(provided, snapshot) => (

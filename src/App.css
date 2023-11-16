@@ -12,6 +12,8 @@
 
 }
 
+
+
 #loginTitle{
 
   font-size: 60pt;
@@ -152,16 +154,30 @@ transition: opacity 200 ms ease-in;
   box-shadow: 0 0 40px white
 }
 
+.titleFadeUp{
+  opacity : 0;
+
+  animation: titleFadeUp 2s ease forwards;
+  transform: translateY(-200px)
+}
+
+@keyframes titleFadeUp{
+  to {
+    opacity:1;
+    transform: translateY(0px)
+  }
+}
+
 
 
 .fadeUp{
   opacity: 0;
   
-  animation: fadeUp 0.5s ease forwards;
-  transform: translateY(100px)
+  animation: fadeUp 2s ease forwards;
+  transform: translateY(300px)
 }
 
-@keyFrames fadeUp{
+@keyframes fadeUp{
 
   to {
     opacity: 1;
