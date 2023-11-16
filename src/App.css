@@ -37,6 +37,13 @@
   box-sizing: border-box;
 }
 
+.UsernameForm{
+
+  margin-top: 80%;
+  
+  
+  
+}
 body {
   background: hsl(259, 53%, 6%);
   display: flex;
@@ -72,12 +79,10 @@ h1 {
   transition: opacity 200ms ease-in;
 
 }
-.todoTransition-enter{
-opacity:0
-}
+
 
 .todoTransition-enter{
-  
+opacity:0;
 transition: opacity 200 ms ease-in;
 }
 
@@ -87,16 +92,19 @@ transition: opacity 200 ms ease-in;
 
 .todoTransition-exit {
   
-  transition: opacity 200ms ease-out;
+  transition: opacity 5000ms ease-out;
+  
 }
 
-.todoTransition-exit-active {
+.todoTransition-exit-active{
+  transition: opacity 5000ms ease-out;
   opacity: 0;
-  transition: opacity 200ms ease-out;
-  }
-
+}
 .todoTransition-exit-done {
-  opacity: 0
+  
+ 
+  opacity: 0;
+  
 }
 
 
@@ -110,6 +118,15 @@ transition: opacity 200 ms ease-in;
   border-radius:  20px;
   padding: 50px;
   transition: 1s
+}
+
+.dragOver{
+  box-shadow: 0 0 0px white;
+  border-radius:  20px;
+  padding: 50px;
+  transition: 1s;
+
+  animation: dragOver 05s ease-out
 }
 
 
@@ -203,12 +220,11 @@ transition: opacity 200 ms ease-in;
   90deg,
   rgb(42, 2, 121) 0%,
   rgb(143, 124, 195) 100%
-  )
-
+  )  ;
+ transition: 1s;
+ 
   
 }
-
-
 
 
 .Todo:nth-child(2n+1){
@@ -216,7 +232,9 @@ transition: opacity 200 ms ease-in;
   90deg,
   rgb(0, 0, 0) 0%,
   rgb(94, 52, 234) 100%
-  )
+  ) ;
+  transition: 1s;
+  
 }
 
 

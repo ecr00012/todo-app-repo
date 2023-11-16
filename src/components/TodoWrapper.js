@@ -6,29 +6,58 @@ import {v4 as uuidv4} from 'uuid'
 import { Droppable, DragDropContext} from 'react-beautiful-dnd'
 import { supabase } from '../App'
 import { CSSTransition, TransitionGroup,  } from 'react-transition-group'
+import { useNavigate } from 'react-router-dom'
 import '../App.css' 
-
 uuidv4()
 
 
 
-export const TodoWrapper = () =>
+export const TodoWrapper = ({listId}) => 
 {
 
     
     const [todos, setTodos] = useState([])
     const [username, setUsername] = useState("")
-    
+    const [user, setUser] = useState();
+    const navigate = useNavigate()
     
     let nameHeader = ""
     useEffect(() =>{
 
-       
-        if (localStorage.getItem("todos")){
-            setTodos((JSON.parse(localStorage.getItem("todos"))))
+        supabase.auth.getUser().then(({ data }) => {
+            if (!data.user) {
+              navigate("/login")
+              return
+            }
             
+            setUser(data.user)})
+                
+                 supabase
+                .from("usernames")
+                .select().then(({data}) =>{
+                    console.log(data)
+                    if (data.length === 0)
+                    {
+                        navigate("/setUsername")
+                        return
+                    }
+                    else 
+                    {
+                       setUsername(data[0].username)
+                    }
+                })
+
+        
+                
+            
+        
+       
+       if (localStorage.getItem("todos")){
+           setTodos((JSON.parse(localStorage.getItem("todos"))))
+        }
+        
            
- }
+        
  }, [])
 
 
@@ -77,6 +106,11 @@ export const TodoWrapper = () =>
         localStorage.setItem("todos","")
     }
 
+    const logout = () => {
+        supabase.auth.signOut()
+        navigate("/login")
+    }
+
     const onDragEnd = (result) => {
 
         const {source, destination} = result;
@@ -114,8 +148,9 @@ console.log(JSON.stringify(todoList))
         
         <DragDropContext onDragEnd = {onDragEnd}>
            
-            <button style = {{"top": "10px", "right": "10px", "position" : "absolute"}} className = 'todo-btn' onCLick ={supabase.auth.signOut()}>logout</button>
-            <h1 className = 'title'> {nameHeader} Your Future Awaits</h1>  
+            <button style = {{"top": "10px", "right": "10px", "position" : "absolute"}} className = 'todo-btn' onClick = {logout}>logout</button>
+           
+            <h1 className = 'title'> {username + ",  your future awaits"}</h1>  
             <div className = "TodoWrapper">
                     <Droppable droppableId='TodoDrops'>
                     {(provided, snapshot) => (
@@ -125,7 +160,7 @@ console.log(JSON.stringify(todoList))
                     {...provided.droppableProps}>
                      <TodoForm addTodo = {addTodo} />
             
-                    <div className = { `${snapshot.isDraggingOver ? "dragActive" : "" }`}>
+                    <div className = { `${snapshot.isDraggingOver ? "dragActive" : "dragOver" }`}>
             
                         <TransitionGroup className= "todosList">
                         {todos.map((todo, index) => (
@@ -135,7 +170,7 @@ console.log(JSON.stringify(todoList))
                                  
                                //
                                     
-                                    <CSSTransition  in= {true} appear = {true} key={todo.id.toString()} timeout={200} classNames={"todoTransition"}>
+                                    <CSSTransition  in= {true} appear = {true} key={todo.id.toString()} timeout = {400} classNames={"todoTransition"}>
                                        
                                         <Todo  task = {todo} key = {todo.id.toString()} index = {index}
                                         toggleComplete = {toggleComplete} deleteTodo = {deleteTodo}
@@ -157,14 +192,14 @@ console.log(JSON.stringify(todoList))
                     
                     {provided.placeholder}
                 
-                    
+                
                 
                     </div>
               </div>
                )}
               </Droppable>
               
-              { todos.length > 0 && <button className = "todo-btn fadeUp"  onClick = {handleClick}>Clear</ button> }
+              { todos.length > 0 && <button className = "todo-btn fadeUp" onClick = {handleClick}>clear</button> }
              
         </div>
         </DragDropContext>
