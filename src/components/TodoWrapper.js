@@ -89,7 +89,7 @@ export const TodoWrapper = ({listId}) =>
 
         const tod = await supabase
         .from('todos')
-        .insert({  "id": id, "task" : todo, "isEditing": false, "completed":false, "userid": user.id})
+        .insert({  "id": id, "task" : todo, "isEditing": false, "completed":false, "userid": user.id, "username" : username})
 
         updateTodos()
         
@@ -205,7 +205,7 @@ export const TodoWrapper = ({listId}) =>
             console.log(todo)
             await supabase
             .from('todos')
-            .insert({"id": todo.id, "task" :todo.task, "completed" : todo.completed, "isEditing" : todo.isEditing, "userid" : user.id})
+            .insert({"id": todo.id, "task" :todo.task, "completed" : todo.completed, "isEditing" : todo.isEditing, "userid" : user.id, "username" : username})
             
         })} 
      // setTodos(todoList)
