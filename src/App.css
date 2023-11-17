@@ -110,13 +110,15 @@ transition: opacity 200 ms ease-in;
 }
 
 .loginForm{
-  transform:scale(0);
+  opacity:0;
+  transform:scale(.95);
   animation: loginForm 2s ease forwards;
 }
 
 @keyframes loginForm{
   to {
-    transform:scale(1)
+    opacity:1;
+    transform:scale(1);
   }
 }
 .TodoForm {
