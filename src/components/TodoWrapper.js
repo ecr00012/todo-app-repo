@@ -67,6 +67,7 @@ export const TodoWrapper = ({listId}) =>
         const todos = await supabase
         .from("todos")
         .select()
+        .order("created_at", {ascending:true})
         .then(({data}) =>{
             
             if (data)
@@ -193,6 +194,7 @@ export const TodoWrapper = ({listId}) =>
 
         }
 
+       
 
 
        
@@ -201,13 +203,19 @@ export const TodoWrapper = ({listId}) =>
        .delete()
        .eq("userid", user.id)
 
-        {todoList.map( async (todo)=>{
-            console.log(todo)
-            await supabase
-            .from('todos')
-            .insert({"id": todo.id, "task" :todo.task, "completed" : todo.completed, "isEditing" : todo.isEditing, "userid" : user.id, "username" : username})
+       for (let i = 0; i < todoList.length; i++ ){
+       let todo = todoList[i]
+        await supabase
+        .from('todos')
+        .insert({"id": todo.id, "task" :todo.task, "completed" : todo.completed, "isEditing" : todo.isEditing, "userid" : user.id, "username" : username, "index" : i})
+       }
+       // {todoList.map( async (todo)=>{
+         //   console.log(todo)
+         //   await supabase
+          //  .from('todos')
+          //  .insert({"id": todo.id, "task" :todo.task, "completed" : todo.completed, "isEditing" : todo.isEditing, "userid" : user.id, "username" : username})
             
-        })} 
+      //  })} 
      // setTodos(todoList)
     //  localStorage.setItem("todos", JSON.stringify(todoList))
 
@@ -223,13 +231,15 @@ export const TodoWrapper = ({listId}) =>
            
             <h1 className = "title titleFadeUp"> {username + ",  your future awaits"}</h1>  
             <div className = "TodoWrapper">
+            
                     <Droppable droppableId='TodoDrops'>
                     {(provided, snapshot) => (
                     <div 
 
                     ref = {provided.innerRef}
                     {...provided.droppableProps}>
-                     <TodoForm addTodo = {addTodo} />
+                        <TodoForm addTodo = {addTodo} />
+                    
             
                     <div className = { `${snapshot.isDraggingOver ? "dragActive" : "dragOver" }`}>
             
